@@ -6,9 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
+
+let urgency1 = Urgency.Later
 
 struct TasksViewLater: View {
-   
+    
+    var reminders: [Reminder]
+    
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
@@ -22,43 +27,8 @@ struct TasksViewLater: View {
                     .frame(width: 337, height: 116)
                 
                 VStack(alignment: .leading, spacing: 8) {
-                    HStack {
-                        Image(systemName: "circle")
-                        Text("Study maths")
-                        Spacer()
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 29.0)
-                                .foregroundStyle(.blue)
-                                .frame(width: 58.05, height: 23.09)
-                                .padding(.trailing, 25)
-                            Image(systemName: "timer")
-                                .padding(.trailing, 25)
-                        }
-                    }
-                    HStack {
-                        Image(systemName: "circle")
-                        Text("Go for a walk")
-                        Spacer()
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 29.0)
-                                .foregroundStyle(.blue)
-                                .frame(width: 58.05, height: 23.09).padding(.trailing, 25)
-                            Image(systemName: "timer")
-                                .padding(.trailing, 25)
-                        }
-                    }
-                    HStack {
-                        Image(systemName: "circle")
-                        Text("Workout")
-                        Spacer()
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 29.0)
-                                .foregroundStyle(.blue)
-                                .frame(width: 58.05, height: 23.09)
-                                .padding(.trailing, 25)
-                            Image(systemName: "timer")
-                                .padding(.trailing, 25)
-                        }
+                    ForEach(reminders) { reminder in
+                        reminderRow(by: reminder)
                     }
                 }
                 .padding(.horizontal)
@@ -66,8 +36,28 @@ struct TasksViewLater: View {
         }
         .padding()
     }
+    
+    func reminderRow(by reminder: Reminder) -> some View {
+        HStack {
+            Image(systemName: reminder.completed ? "checkmark.circle" : "circle")
+            Text(reminder.title)
+            Spacer()
+            ZStack {
+                RoundedRectangle(cornerRadius: 29.0)
+                    .foregroundStyle(.blue)
+                    .frame(width: 58.05, height: 23.09)
+                    .padding(.trailing, 25)
+                
+                // TODO: Dovremmo mettere il timer qui...
+                Image(systemName: "timer")
+                    .padding(.trailing, 25)
+            }
+        }
+    }
+    
+    
 }
 
 #Preview {
-    TasksViewLater()
+    TasksViewLater(reminders: [])
 }

@@ -8,48 +8,44 @@
 import SwiftUI
 
 struct CustomTabBar: View {
-    
-    /*@State private var reminders: [String] = []
-    @State private var newReminder: String = ""*/
-    
+    var reminders: [Reminder]
+    var completed: [Reminder] // Nuovo parametro per i reminder completati
+
     @State var isSheetOpen: Bool = false
-    
+    @State var isSheetOpenCompleted: Bool = false
+
     var body: some View {
-        HStack{
-              Button(action: {
+        HStack {
+            Button(action: {
                 isSheetOpen = true
-            },
-                     label: {
-                  HStack{
-                      Image(systemName: "plus.circle.fill")
-                          .foregroundStyle(.blue)
-                          .fontWeight(.bold)
-                      Text ("New Reminder")
-                          .foregroundStyle(.blue)
-                          .fontWeight(.bold)
-                  }
-                  .padding(.leading, 21)
-                  
-              })
-            
-            
+            }, label: {
+                HStack {
+                    Image(systemName: "plus.circle.fill")
+                        .foregroundStyle(.blue)
+                        .fontWeight(.bold)
+                    Text("New Reminder")
+                        .foregroundStyle(.blue)
+                        .fontWeight(.bold)
+                }
+                .padding(.leading, 21)
+            })
+
             Spacer()
-            Text ("Completed")
-                .foregroundStyle(.blue)
-                .padding(.trailing, 21)
-            
-            
-            
+
+            Button(action: {
+                isSheetOpenCompleted = true
+            }, label: {
+                Text("Completed")
+                    .foregroundStyle(.blue)
+                    .padding(.trailing, 21)
+            })
         }
         .sheet(isPresented: $isSheetOpen, content: {
             AddReminderView()
         })
-        
+        .sheet(isPresented: $isSheetOpenCompleted, content: {
+            CompletedView(completed: completed) // Passiamo i reminder completati
+        })
     }
-  
-    }
-
-
-#Preview {
-    CustomTabBar()
 }
+
